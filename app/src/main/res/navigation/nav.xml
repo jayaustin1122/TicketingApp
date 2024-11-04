@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav"
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.example.smartticketing.views.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" />
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="com.example.smartticketing.views.SignInFragment"
+        android:label="fragment_sign_in"
+        tools:layout="@layout/fragment_sign_in" />
+    <fragment
+        android:id="@+id/dashBoardFragment"
+        android:name="com.example.smartticketing.views.DashBoardFragment"
+        android:label="fragment_dash_board"
+        tools:layout="@layout/fragment_dash_board" />
+    <fragment
+        android:id="@+id/withLicensedFragment"
+        android:name="com.example.smartticketing.views.WithLicensedFragment"
+        android:label="fragment_with_licensed"
+        tools:layout="@layout/fragment_with_licensed" />
+    <fragment
+        android:id="@+id/noLicensedFragment"
+        android:name="com.example.smartticketing.views.NoLicensedFragment"
+        android:label="fragment_no_licensed"
+        tools:layout="@layout/fragment_no_licensed" />
+    <fragment
+        android:id="@+id/profileAccountFragment"
+        android:name="com.example.smartticketing.views.profile.ProfileAccountFragment"
+        android:label="ProfileAccountFragment" />
+    <fragment
+        android:id="@+id/updateInfoFragment"
+        android:name="com.example.smartticketing.views.profile.UpdateInfoFragment"
+        android:label="UpdateInfoFragment" />
+    <fragment
+        android:id="@+id/updatePassFragment"
+        android:name="com.example.smartticketing.views.profile.UpdatePassFragment"
+        android:label="UpdatePassFragment" />
+</navigation>

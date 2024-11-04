@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">SmartTicketing</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="vehicles">
+        <item>Jeepney</item>
+        <item>Tricycle</item>
+        <item>Bus</item>
+        <item>Van</item>
+        <item>Motorcycle</item>
+        <item>Taxi</item>
+        <item>UV Express</item>
+        <item>Bicycle</item>
+        <item>E-trike</item>
+        <item>Car</item>
+    </string-array>
+
+</resources>

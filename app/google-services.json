@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "498934944671",
+    "project_id": "smartticketingsystem-307d4",
+    "storage_bucket": "smartticketingsystem-307d4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:498934944671:android:78f5b2f577953837c323aa",
+        "android_client_info": {
+          "package_name": "com.example.smartticketing"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNroIATjFOu2bqUE8o7ECpav4MW5wVnhs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
