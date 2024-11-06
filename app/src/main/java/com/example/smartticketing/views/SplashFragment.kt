@@ -14,13 +14,17 @@ import androidx.navigation.fragment.findNavController
 import com.example.smartticketing.R
 import com.example.smartticketing.databinding.FragmentSplashBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class SplashFragment : Fragment() {
     private lateinit var binding: FragmentSplashBinding
     private lateinit var auth: FirebaseAuth
+    private val fireStore = FirebaseFirestore.getInstance()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,11 +50,33 @@ class SplashFragment : Fragment() {
                 if (firebaseUser == null) {
                     findNavController().navigate(R.id.signInFragment)
                 } else {
-                    findNavController().navigate(R.id.holderFragment)
+                    checkUserType(firebaseUser.uid) // Check user type
                 }
             } else {
-                // showNoInternetDialog()
-                Toast.makeText(requireContext(),"No InterNet Detected!",Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "No Internet Detected!", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private suspend fun checkUserType(userId: String) {
+        GlobalScope.launch(Dispatchers.Main) {
+            try {
+                val userDocument = fireStore.collection("users").document(userId)
+                val snapshot = userDocument.get().await()
+
+                if (snapshot.exists()) {
+                    val userType = snapshot.getString("userType")
+                    when (userType) {
+
+                        "member" -> findNavController().navigate(R.id.memberFragment)
+                        else -> findNavController().navigate(R.id.holderFragment)
+                    }
+                } else {
+                    Toast.makeText(requireContext(), "User data not found.", Toast.LENGTH_SHORT).show()
+                    findNavController().navigate(R.id.signInFragment)
+                }
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), "Failed to retrieve user data: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
     }

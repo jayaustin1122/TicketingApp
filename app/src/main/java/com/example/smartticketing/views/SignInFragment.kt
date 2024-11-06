@@ -39,10 +39,20 @@ class SignInFragment : Fragment() {
 
         viewModel.signInStatus.observe(viewLifecycleOwner, Observer { isSuccess ->
             if (isSuccess) {
-                findNavController().navigate(R.id.holderFragment)
+
+                viewModel.userType.observe(viewLifecycleOwner, Observer { userType ->
+                    ProgressDialogUtils.dismissProgressDialog()
+                    if (userType == "member") {
+                        findNavController().navigate(R.id.memberFragment)
+                    } else {
+                        findNavController().navigate(R.id.holderFragment)
+                    }
+                })
             }
         })
-
+        binding.createAccount.setOnClickListener{
+            findNavController().navigate(R.id.signUpFragment)
+        }
 
         viewModel.errorMessage.observe(viewLifecycleOwner, Observer { error ->
             if (error != null) {

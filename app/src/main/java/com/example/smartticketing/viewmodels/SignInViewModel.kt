@@ -7,7 +7,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
-
 class SignInViewModel : ViewModel() {
 
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
@@ -18,6 +17,9 @@ class SignInViewModel : ViewModel() {
 
     private val _errorMessage = MutableLiveData<String>()
     val errorMessage: LiveData<String> get() = _errorMessage
+
+    private val _userType = MutableLiveData<String?>()
+    val userType: LiveData<String?> get() = _userType
 
     private val viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
@@ -31,9 +33,25 @@ class SignInViewModel : ViewModel() {
         uiScope.launch {
             withContext(Dispatchers.IO) {
                 try {
+                    // Sign in the user
                     auth.signInWithEmailAndPassword(email, password).await()
-                    withContext(Dispatchers.Main) {
-                        _signInStatus.value = true
+
+                    val firebaseUser = auth.currentUser
+                    if (firebaseUser != null) {
+
+                        val userDocument = fireStore.collection("users").document(firebaseUser.uid)
+                        val snapshot = userDocument.get().await()
+
+                        withContext(Dispatchers.Main) {
+                            if (snapshot.exists()) {
+                                val userType = snapshot.getString("userType")
+                                _userType.value = userType
+
+                                _signInStatus.value = true
+                            } else {
+                                _errorMessage.value = "User data not found."
+                            }
+                        }
                     }
                 } catch (e: Exception) {
                     withContext(Dispatchers.Main) {

@@ -16,9 +16,20 @@
         android:src="@drawable/ico"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Welcome Text -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/useridTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="User ID"
+        android:textSize="16sp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/welcome_text" />
+
     <TextView
         android:id="@+id/welcome_text"
         android:layout_width="wrap_content"
@@ -34,15 +45,15 @@
 
     <!-- User ID Label -->
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/useridTextView"
+        android:id="@+id/create_account"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="30dp"
-        android:text="User ID"
+        android:text="Dont have an Account Sign Up?"
         android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/welcome_text" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonLoginLogin" />
 
     <!-- Email EditText with OutlinedBox Style -->
     <com.google.android.material.textfield.TextInputLayout
@@ -61,8 +72,8 @@
             android:id="@+id/etUsernameLogin"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:hint="Email"
             android:drawablePadding="10dp"
+            android:hint="Email"
             android:scrollbars="vertical"
             app:boxStrokeWidth="1dp"
             app:boxStrokeWidthFocused="2dp" />
@@ -108,7 +119,6 @@
             app:boxStrokeWidthFocused="2dp" />
 
     </com.google.android.material.textfield.TextInputLayout>
-
 
 
     <com.google.android.material.button.MaterialButton
