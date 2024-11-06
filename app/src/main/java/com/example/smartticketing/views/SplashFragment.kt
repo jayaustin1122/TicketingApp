@@ -46,7 +46,7 @@ class SplashFragment : Fragment() {
                 if (firebaseUser == null) {
                     findNavController().navigate(R.id.signInFragment)
                 } else {
-                    findNavController().navigate(R.id.dashBoardFragment)
+                    findNavController().navigate(R.id.holderFragment)
                 }
             } else {
                 // showNoInternetDialog()

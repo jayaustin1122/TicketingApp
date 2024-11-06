@@ -63,10 +63,6 @@ class ProfileAccountFragment : Fragment() {
                 findNavController().navigate(R.id.signInFragment)
             }
         }
-        binding.backButton.setOnClickListener {
-            findNavController().navigateUp()
-        }
-
 
         viewModel.errorMessage.observe(viewLifecycleOwner, Observer { errorMessage ->
             if (errorMessage != null) {

@@ -19,6 +19,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
@@ -86,8 +87,22 @@ class UpdateInfoFragment : Fragment() {
                 }
             }
         })
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    val bundle = Bundle().apply {
+                        putInt("selectedFragmentId", R.id.navigation_account)
+                    }
+                    findNavController().navigate(R.id.holderFragment, bundle)
+                }
+            }
+        )
         binding.backButton.setOnClickListener {
-            findNavController().navigateUp()
+            val bundle = Bundle().apply {
+                putInt("selectedFragmentId", R.id.navigation_account)
+            }
+            findNavController().navigate(R.id.holderFragment, bundle)
         }
         viewModelUserInfo.errorMessage.observe(viewLifecycleOwner, Observer { errorMessage ->
             if (errorMessage != null) {

@@ -4,196 +4,307 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.DashBoardFragment">
+    tools:context=".views.nav.DashBoardFragment">
 
-   <com.google.android.material.appbar.AppBarLayout
-       android:id="@+id/appBarLayout"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-       app:layout_constraintEnd_toEndOf="parent"
-       app:layout_constraintHorizontal_bias="0.5"
-       app:layout_constraintStart_toStartOf="parent"
-       app:layout_constraintTop_toTopOf="parent">
 
-      <androidx.appcompat.widget.Toolbar
-          android:id="@+id/toolbar"
-          android:layout_width="match_parent"
-          android:layout_height="?attr/actionBarSize"
-          android:background="@color/primary"
-          app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+    <!-- Card 1 with Red to Orange Gradient -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card"
+        android:layout_width="0dp"
+        android:layout_height="137dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="20dp"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-         <de.hdodenhof.circleimageview.CircleImageView
-             android:id="@+id/img_user"
-             android:layout_width="40dp"
-             android:layout_height="40dp"
-             android:background="@android:color/transparent"
-             android:src="@drawable/baseline_person_24" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/ss"
+            android:orientation="horizontal">
 
-         <com.google.android.material.textview.MaterialTextView
-             android:id="@+id/textView"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_marginStart="30dp"
-             android:elevation="5dp"
-             android:text="Name"
-             android:textColor="@color/white"
-             android:textSize="22sp"
-             android:textStyle="bold" />
-      </androidx.appcompat.widget.Toolbar>
-
-   </com.google.android.material.appbar.AppBarLayout>
-
-   <!-- Card 1 with Red to Orange Gradient -->
-   <com.google.android.material.card.MaterialCardView
-       android:id="@+id/card"
-       android:layout_width="0dp"
-       android:layout_marginHorizontal="20dp"
-       android:layout_height="137dp"
-       android:layout_marginTop="40dp"
-       app:cardCornerRadius="10dp"
-       app:layout_constraintEnd_toEndOf="parent"
-       app:layout_constraintHorizontal_bias="0.5"
-       app:layout_constraintStart_toStartOf="parent"
-       app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
-      <LinearLayout
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:background="@drawable/gradient_blue_darkblue"
-          android:orientation="horizontal">
-
-         <LinearLayout
-             android:layout_width="wrap_content"
-             android:orientation="vertical"
-             android:layout_marginStart="10dp"
-             android:layout_height="wrap_content">
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textAlignment="center"
-                android:layout_marginTop="30dp"
-                android:text="Number Of Apprehend"
-                android:textColor="@android:color/white"
-                android:textSize="16sp" />
-            <TextView
-                android:id="@+id/tvCountApprehend"
-                android:layout_width="match_parent"
+                android:layout_marginStart="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/regular"
+                    android:padding="8dp"
+                    android:text="Have you witnessed or been victim of a traffic offense? Please report it!"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/report_crime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/regular"
+                    android:text="Report a violation"
+                    android:textColor="@color/ss"
+                    android:textSize="12sp"
+                    app:backgroundTint="@color/white" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/regular"
+        android:paddingStart="12dp"
+        android:text="Report an offence immediately"
+        android:textColor="@color/ss"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/textView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/regular"
+        android:padding="12dp"
+        android:text="Report traffic offences immediately to avoidlegal issues and ensures safety. Timelyreporting helps address violation swiftly andmaintain road order."
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/categories"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/bold"
+        android:padding="8dp"
+        android:text="Categories"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/card"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/card"
+        app:layout_constraintTop_toBottomOf="@+id/card" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:padding="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/categories">
+
+        <!-- First row of images -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textAlignment="center"
-                android:text="100"
-                android:textColor="@android:color/white"
-                android:textSize="36sp" />
-         </LinearLayout>
-         <ImageView
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:src="@drawable/ico"/>
-      </LinearLayout>
-   </com.google.android.material.card.MaterialCardView>
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
 
-   <!-- Card 2 with Blue to Dark Blue Gradient -->
-   <com.google.android.material.card.MaterialCardView
-       android:id="@+id/card2"
-       android:layout_width="0dp"
-       android:layout_marginHorizontal="20dp"
-       android:layout_height="137dp"
-       android:layout_marginTop="10dp"
-       android:background="@drawable/gradient_blue_darkblue"
-       app:cardCornerRadius="10dp"
-       app:cardElevation="4dp"
-       app:layout_constraintEnd_toEndOf="parent"
-       app:layout_constraintHorizontal_bias="0.5"
-       app:layout_constraintStart_toStartOf="parent"
-       app:layout_constraintTop_toBottomOf="@+id/card">
-      <LinearLayout
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:background="@drawable/gradient_red_orange"
-         android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/speeding"
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:src="@drawable/speed" />
 
-         <ImageView
-             android:layout_width="100dp"
-             android:layout_height="match_parent"
-             android:src="@drawable/people"
-             android:layout_marginStart="20dp"
-             app:tint="@color/white" />
-         <LinearLayout
-             android:layout_width="match_parent"
-             android:orientation="vertical"
-             android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="over speeding"
+                    android:gravity="center"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textAlignment="center"
-                android:layout_marginTop="30dp"
-                android:text="Number Of Registered Drivers"
-                android:textColor="@android:color/white"
-                android:textSize="16sp" />
-            <TextView
-                android:id="@+id/tvDriverCount"
-                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:id="@+id/no_insurance"
+                    android:layout_height="80dp"
+                    android:src="@drawable/car" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="no registration"
+                    android:gravity="center"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textAlignment="center"
-                android:text="100"
-                android:textColor="@android:color/white"
-                android:textSize="36sp" />
-         </LinearLayout>
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:id="@+id/drunk_and_drive"
+                    android:src="@drawable/drink" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Driving Under the Influence"
+                    android:gravity="center"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Second row of images -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:id="@+id/traffic_violation"
+                    android:src="@drawable/traffic" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="traffic
+violation"
+                    android:gravity="center"
+                    android:textSize="14sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:id="@+id/without_licence"
+                    android:src="@drawable/nolicense" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="without driving licence"
+                    android:gravity="center"
+                    android:textSize="14sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:id="@+id/no_helmet"
+                    android:src="@drawable/helmer" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="no helmet"
+                    android:gravity="center"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
 
 
-      </LinearLayout>
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/btn_with_licensed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btn_no_licensed">
 
-   </com.google.android.material.card.MaterialCardView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:padding="32dp"
+            android:text="With Licensed"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
 
-   <!-- No Licensed Button -->
+    </com.google.android.material.card.MaterialCardView>
 
-   <!-- With Licensed Button -->
-   <com.google.android.material.card.MaterialCardView
-       android:id="@+id/btn_with_licensed"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:layout_marginTop="36dp"
-       app:cardCornerRadius="10dp"
-       app:cardElevation="4dp"
-       app:layout_constraintEnd_toEndOf="parent"
-       app:layout_constraintHorizontal_bias="0.5"
-       app:layout_constraintStart_toEndOf="@+id/btn_no_licensed"
-       app:layout_constraintTop_toBottomOf="@+id/card2">
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/btn_no_licensed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_with_licensed"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent">
 
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_margin="5dp"
-          android:padding="32dp"
-          android:text="With Licensed"
-          android:textColor="@android:color/black"
-          android:textSize="16sp" />
-
-   </com.google.android.material.card.MaterialCardView>
-
-   <com.google.android.material.card.MaterialCardView
-       android:id="@+id/btn_no_licensed"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:layout_marginTop="36dp"
-       app:cardCornerRadius="10dp"
-       app:cardElevation="4dp"
-       app:layout_constraintEnd_toStartOf="@+id/btn_with_licensed"
-       app:layout_constraintHorizontal_bias="0.5"
-       app:layout_constraintStart_toStartOf="parent"
-       app:layout_constraintTop_toBottomOf="@+id/card2">
-
-      <TextView
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:layout_margin="5dp"
-          android:padding="32dp"
-          android:text="No Licensed"
-          android:textColor="@android:color/black"
-          android:textSize="16sp" />
-   </com.google.android.material.card.MaterialCardView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:padding="32dp"
+            android:text="No Licensed"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:visibility="gone" />
+    </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

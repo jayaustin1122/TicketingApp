@@ -17,7 +17,7 @@
         tools:layout="@layout/fragment_sign_in" />
     <fragment
         android:id="@+id/dashBoardFragment"
-        android:name="com.example.smartticketing.views.DashBoardFragment"
+        android:name="com.example.smartticketing.views.nav.DashBoardFragment"
         android:label="fragment_dash_board"
         tools:layout="@layout/fragment_dash_board" />
     <fragment
@@ -42,4 +42,13 @@
         android:id="@+id/updatePassFragment"
         android:name="com.example.smartticketing.views.profile.UpdatePassFragment"
         android:label="UpdatePassFragment" />
+    <fragment
+        android:id="@+id/holderFragment"
+        android:name="com.example.smartticketing.views.nav.HolderFragment"
+        android:label="HolderFragment" />
+    <fragment
+        android:id="@+id/reportFragment"
+        android:name="com.example.smartticketing.views.nav.ReportFragment"
+        android:label="fragment_report"
+        tools:layout="@layout/fragment_report" />
 </navigation>

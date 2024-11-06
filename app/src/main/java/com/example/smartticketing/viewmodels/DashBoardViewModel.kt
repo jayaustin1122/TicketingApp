@@ -8,6 +8,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import com.example.smartticketing.model.UserInfo
+import com.example.smartticketing.model.ViolationItem
+import com.example.smartticketing.utilities.Violations.violationsList
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -26,6 +28,8 @@ class DashBoardViewModel : ViewModel() {
     private val _userInfo = MutableLiveData<UserInfo?>()
     val userInfo: LiveData<UserInfo?> get() = _userInfo
 
+    private val _violationList = MutableLiveData<List<ViolationItem>>()
+    val violationList: LiveData<List<ViolationItem>> get() = _violationList
     private val _driverCount = MutableLiveData<Int?>()
     val driver: LiveData<Int?> get() = _driverCount
 
@@ -221,22 +225,31 @@ class DashBoardViewModel : ViewModel() {
         }
     }
 
-    fun loadApprehends() {
+    fun loadViolationData(violationType: String) {
         val db = FirebaseFirestore.getInstance()
         val currentUser = FirebaseAuth.getInstance().currentUser
 
         if (currentUser != null) {
             CoroutineScope(Dispatchers.IO).launch {
                 try {
+                    // Fetch all apprehensions (consider limiting for performance)
                     val querySnapshot = db.collection("apprehensions")
                         .get().await()
 
-                    // Get the count of documents in the collection
-                    val appCount = querySnapshot.size()
+                    // Filter locally by mapping the "selectedViolations" array to a list of ViolationItem objects
+                    val violationCount = querySnapshot.documents.filter { document ->
+                        val violations = document.get("selectedViolations") as? List<Map<String, Any>>
+                        violations?.map { violationMap ->
+                            ViolationItem(
+                                code = violationMap["code"] as? String ?: "",
+                                name = violationMap["name"] as? String ?: "",
+                                amount = violationMap["amount"] as? String ?: ""
+                            )
+                        }?.any { it.name == violationType } == true
+                    }.size
 
                     withContext(Dispatchers.Main) {
-                        // Bind the result to the fragment
-                        _apprehendCount.value = appCount
+                        _apprehendCount.value = violationCount
                     }
                 } catch (e: Exception) {
                     withContext(Dispatchers.Main) {
@@ -248,4 +261,48 @@ class DashBoardViewModel : ViewModel() {
             _errorMessage.value = "User not authenticated"
         }
     }
+    fun loadViolationData3(violationType: String) {
+        if (violationType == "Traffic Violation") {
+            // If the violation type is "Traffic Violation", directly return the predefined list
+            _apprehendCount.value = violationsList.size
+            _violationList.value = violationsList // This will update the UI with the violation list
+        } else {
+            val db = FirebaseFirestore.getInstance()
+            val currentUser = FirebaseAuth.getInstance().currentUser
+
+            if (currentUser != null) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    try {
+                        // Fetch all apprehensions
+                        val querySnapshot = db.collection("apprehensions")
+                            .get().await()
+
+                        // Filter the violations based on the selected violation type
+                        val violationCount = querySnapshot.documents.filter { document ->
+                            val violations = document.get("selectedViolations") as? List<Map<String, Any>>
+                            violations?.map { violationMap ->
+                                ViolationItem(
+                                    code = violationMap["code"] as? String ?: "",
+                                    name = violationMap["name"] as? String ?: "",
+                                    amount = violationMap["amount"] as? String ?: ""
+                                )
+                            }?.any { it.name == violationType } == true
+                        }.size
+
+                        withContext(Dispatchers.Main) {
+                            _apprehendCount.value = violationCount // Set the count of violations
+                        }
+                    } catch (e: Exception) {
+                        withContext(Dispatchers.Main) {
+                            _errorMessage.value = e.message
+                        }
+                    }
+                }
+            } else {
+                _errorMessage.value = "User not authenticated"
+            }
+        }
+    }
+
+
 }

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/textFullName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Full Name: "
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/textLicenseNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="License Number: "
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/textBirthdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Birthdate: "
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/textSex"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sex: "
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/textAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Address: "
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/textVehicleType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Vehicle Type: "
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/textTotalAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total Amount: "
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/textPlate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Plate: "
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/textSelectedViolations"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Violations: "
+        android:textSize="16sp"/>
+
+</LinearLayout>

@@ -39,7 +39,7 @@ class SignInFragment : Fragment() {
 
         viewModel.signInStatus.observe(viewLifecycleOwner, Observer { isSuccess ->
             if (isSuccess) {
-                findNavController().navigate(R.id.dashBoardFragment)
+                findNavController().navigate(R.id.holderFragment)
             }
         })
 
