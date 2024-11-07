@@ -35,7 +35,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
 import java.util.*
 
 class MemberFragment : Fragment() {
@@ -191,9 +190,10 @@ class MemberFragment : Fragment() {
         val time = binding.timeEditText.text.toString()
         val plateNumber = binding.plateNumberEditText.text.toString()
         val details = binding.otherDetailsEditText.text.toString()
+        val address = binding.etAddress.text.toString()
 
         if (date.isNotEmpty() && time.isNotEmpty() && plateNumber.isNotEmpty() && selectedImage != Uri.EMPTY) {
-            uploadImageAndData(date, time, plateNumber, details)
+            uploadImageAndData(date, time, plateNumber, details,address)
         } else {
             ProgressDialogUtils.dismissProgressDialog()
             Toast.makeText(requireContext(), "Please fill all fields and select an image", Toast.LENGTH_SHORT).show()
@@ -208,7 +208,7 @@ class MemberFragment : Fragment() {
                         val firstName = document.getString("fullName") ?: ""
                         val lastName = document.getString("lastName") ?: ""
                         currentUserName = "$firstName $lastName"
-                        Log.d("MemberFragment", "Current User Name: $currentUserName")
+                        Log.d("MemberFragment", "Current User Name1: $currentUserName")
                     } else {
                         Log.d("MemberFragment", "No user document found")
                     }
@@ -219,7 +219,13 @@ class MemberFragment : Fragment() {
         }
     }
 
-    private fun uploadImageAndData(date: String, time: String, plate: String, details: String) {
+    private fun uploadImageAndData(
+        date: String,
+        time: String,
+        plate: String,
+        details: String,
+        address: String
+    ) {
         if (currentUserName.isEmpty()) {
             Toast.makeText(requireContext(), "User information not available", Toast.LENGTH_SHORT).show()
             return
@@ -235,8 +241,11 @@ class MemberFragment : Fragment() {
                         "plateNumber" to plate,
                         "details" to details,
                         "imageUrl" to imageUrl.toString(),
+                        "address" to address,
                         "reportedBy" to currentUserName
+
                     )
+                    Log.d("MemberFragment", "Current User Name2: $currentUserName")
                     firestore.collection("incidentReports")
                         .add(incidentData)
                         .addOnSuccessListener {
