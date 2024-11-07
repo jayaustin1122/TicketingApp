@@ -303,6 +303,32 @@ class DashBoardViewModel : ViewModel() {
             }
         }
     }
+    fun loadApprehends() {
+        val db = FirebaseFirestore.getInstance()
+        val currentUser = FirebaseAuth.getInstance().currentUser
 
+        if (currentUser != null) {
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    val querySnapshot = db.collection("apprehensions")
+                        .get().await()
+
+                    // Get the count of documents in the collection
+                    val appCount = querySnapshot.size()
+
+                    withContext(Dispatchers.Main) {
+                        // Bind the result to the fragment
+                        _apprehendCount.value = appCount
+                    }
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        _errorMessage.value = e.message
+                    }
+                }
+            }
+        } else {
+            _errorMessage.value = "User not authenticated"
+        }
+    }
 
 }

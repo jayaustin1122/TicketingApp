@@ -8,6 +8,6 @@ data class RegisteredDrivers(
     val licensedNumber: String = "",
     val sex: String = "",
     val timestamp: String = "",
-    val profilePicture: String = "",
+    val image: String = "",
     val plate: String = ""
 )

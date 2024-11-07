@@ -13,6 +13,17 @@ object Violations {
         ViolationItem(code = "7", name = "No Registration", amount = "2,000.00"),
         ViolationItem(code = "8", name = "Driving Under the Influence", amount = "20,000.00"),
         ViolationItem(code = "9", name = "Use of Mobile Phone While Driving", amount = "1,000.00"),
-        ViolationItem(code = "10", name = "Failure to Signal", amount = "1,000.00")
+        ViolationItem(code = "10", name = "Failure to Signal", amount = "1,000.00"),
+        ViolationItem(code = "11", name = "Reckless Driving", amount = "1000.00"),
+        ViolationItem(code = "12", name = "Beating the red light", amount = "1000.00"),
+        ViolationItem(code = "13", name = "No OR-CR", amount = "3000.00"),
+        ViolationItem(code = "14", name = "Illegal Parking", amount = "200.00"),
+        ViolationItem(code = "15", name = "Illegal Lights", amount = "1000.00"),
+        ViolationItem(code = "16", name = "Overloading", amount = "2000.00"),
+        ViolationItem(code = "17", name = "Obstruction", amount = "1000.00"),
+        ViolationItem(code = "18", name = "Unregistered", amount = "10000.00"),
+        ViolationItem(code = "19", name = "Defective Parts", amount = "5000.00"),
+        ViolationItem(code = "20", name = "Smoke Belching", amount = "2000.00"),
+        ViolationItem(code = "21", name = "Coding", amount = "300.00")
     )
 }

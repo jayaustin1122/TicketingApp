@@ -173,7 +173,7 @@ class NoLicensedFragment : Fragment() {
         val birthdate = binding.birthdate.text.toString().trim()
         val sex = binding.sex.text.toString().trim()
         val address = binding.address.text.toString().trim()
-        val vehicleType = binding.tvViolation.text.toString().trim()
+        val vehicleType = binding.tvVehicle.text.toString().trim()
         val totalAmount = binding.tvTotalAmount.text.toString().trim()
         val plate = binding.plate.text.toString().trim()
         val selectedViolations = getSelectedViolations()

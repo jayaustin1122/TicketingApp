@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -20,6 +21,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.smartticketing.R
 import com.example.smartticketing.utilities.ProgressDialogUtils
+import com.example.smartticketing.utilities.Violations
 
 class DashBoardFragment : Fragment() {
 
@@ -38,14 +40,6 @@ class DashBoardFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        binding.reportCrime.setOnClickListener {
-            val bundle = Bundle().apply {
-                putInt("selectedFragmentId", R.id.navigation_services)
-            }
-            findNavController().navigate(R.id.holderFragment, bundle)
-        }
-
-
         viewModel.errorMessage.observe(viewLifecycleOwner, Observer { errorMessage ->
             if (errorMessage != null) {
                 Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
@@ -56,36 +50,87 @@ class DashBoardFragment : Fragment() {
             viewModel.loadUserInfo()
             viewModel.loadDriverCount()
         }
+        val violationNames = Violations.violationsList.map { it.name }.toTypedArray()
 
+        val adapters = ArrayAdapter(
+            requireContext(), android.R.layout.simple_dropdown_item_1line, violationNames
+        )
+        binding.tvViolation.setAdapter(adapters)
+        binding.tvViolation.setOnItemClickListener { parent, _, position, _ ->
+            val selectedViolation = Violations.violationsList[position]
+            val alertDialog = AlertDialog.Builder(requireContext())
+                .setTitle("Apprehension for ${selectedViolation.name}")
+                .setMessage("Is this a license apprehension or no license apprehension?")
+                .setPositiveButton("With License") { dialog, which ->
+                    findNavController().navigate(R.id.withLicensedFragment)
+                }
+                .setNegativeButton("No License") { dialog, which ->
+                    findNavController().navigate(R.id.noLicensedFragment)
+                }
+                .setNeutralButton("Cancel") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .create()
+
+            alertDialog.show()
+            binding.tvViolation.clearFocus()
+        }
 
         binding.noHelmet.setOnClickListener {
-            viewModel.loadViolationData("No Helmet") // Load data for no helmet violations
-            observeAndShowViolationDialog("No Helmet")
+            alertDialog("No Helmet")
         }
 
         binding.drunkAndDrive.setOnClickListener {
-            viewModel.loadViolationData("Driving Under the Influence") // Load data for drunk driving violations
-            observeAndShowViolationDialog("Driving Under the Influence")
+            alertDialog("Drunk and Drive")
         }
 
         binding.speeding.setOnClickListener {
-            viewModel.loadViolationData("Over Speeding") // Load data for over speeding violations
-            observeAndShowViolationDialog("Over Speeding")
+            alertDialog("Speeding")
         }
 
         binding.noInsurance.setOnClickListener {
-            viewModel.loadViolationData("No Registration") // Load data for no insurance violations
-            observeAndShowViolationDialog("No Registration")
+            alertDialog("No Registration")
         }
 
         binding.trafficViolation.setOnClickListener {
-            viewModel.loadViolationData("Running a Red Light") // Load data for traffic violations
-            observeAndShowViolationDialog("Running a Red Light")
+            alertDialog("Traffic Violation")
         }
 
         binding.withoutLicence.setOnClickListener {
-            viewModel.loadViolationData("No License") // Load data for no license violations
-            observeAndShowViolationDialog("No License")
+            alertDialog("Without Licence")
+        }
+        binding.reclessDriving.setOnClickListener {
+            alertDialog("Recless Driving")
+        }
+        binding.beatingTheRedLight.setOnClickListener {
+            alertDialog("Beating Red Light")
+        }
+        binding.noorcr.setOnClickListener {
+            alertDialog("No or Wrong Registration")
+        }
+        binding.illegalParking.setOnClickListener {
+            alertDialog("Illegal Parking")
+        }
+        binding.illegalLights.setOnClickListener {
+            alertDialog("Illegal Lights")
+        }
+        binding.overloading.setOnClickListener {
+            alertDialog("Overloading")
+        }
+        binding.obstruction.setOnClickListener {
+            alertDialog("Obstruction")
+        }
+        binding.unregisteredVehicle.setOnClickListener {
+            alertDialog("Unregistered Vehicle")
+        }
+        binding.defectiveParts.setOnClickListener {
+            alertDialog("Defective Parts")
+        }
+        binding.smokeBelching.setOnClickListener {
+            alertDialog("Smoke Belching")
+        }
+        binding.codingViolation.setOnClickListener {
+            alertDialog("Coding Violation")
         }
     }
         private fun observeAndShowViolationDialog(violationType: String) {
@@ -117,4 +162,21 @@ class DashBoardFragment : Fragment() {
             dialog.show()
         }
 
+    fun alertDialog(type: String) {
+        val alertDialog = AlertDialog.Builder(requireContext())
+            .setTitle("Add Violation for $type")
+            .setMessage("Is this a license apprehension or no license apprehension?")
+            .setPositiveButton("With License") { dialog, which ->
+                findNavController().navigate(R.id.withLicensedFragment)
+            }
+            .setNegativeButton("No License") { dialog, which ->
+                findNavController().navigate(R.id.noLicensedFragment)
+            }
+            .setNeutralButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+
+        alertDialog.show()
+    }
 }

@@ -122,7 +122,7 @@
             android:layout_height="wrap_content"
             android:text="Edit Profile"
             style="@style/Widget.MaterialComponents.Button"
-            android:backgroundTint="@color/secondary" />
+            android:backgroundTint="@color/ss" />
         <com.google.android.material.button.MaterialButton
             app:cornerRadius="8dp"
             android:id="@+id/btn_update_pass"
@@ -130,7 +130,7 @@
             android:layout_height="wrap_content"
             android:text="Update Password"
             style="@style/Widget.MaterialComponents.Button"
-            android:backgroundTint="@color/secondary" />
+            android:backgroundTint="@color/ss" />
 
         <com.google.android.material.button.MaterialButton
             app:cornerRadius="8dp"
@@ -139,6 +139,6 @@
             android:layout_height="wrap_content"
             android:text="Logout"
             style="@style/Widget.MaterialComponents.Button"
-            android:backgroundTint="@color/secondary" />
+            android:backgroundTint="@color/ss" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

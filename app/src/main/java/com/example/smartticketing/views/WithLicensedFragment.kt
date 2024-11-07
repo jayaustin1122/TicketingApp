@@ -145,7 +145,7 @@ class WithLicensedFragment : Fragment() {
             binding.address.setText(selectedDriver.address)
             binding.sex.setText(selectedDriver.sex)
             Glide.with(requireContext())
-                .load(selectedDriver.profilePicture)
+                .load(selectedDriver.image)
                 .error(R.drawable.baseline_person_24)
                 .into(binding.avatar)
             binding.birthdate.setText(selectedDriver.birthdate)
@@ -207,53 +207,46 @@ class WithLicensedFragment : Fragment() {
         }
         datePicker.show(parentFragmentManager, "MaterialDatePicker")
     }
+
     private fun searchDrivers(query: String) {
         firestore.collection("registered_drivers")
             .get()
             .addOnSuccessListener { documents ->
-                val driverNames = mutableListOf<String>()
-                val driversLastName = mutableListOf<String>()
                 val drivers = mutableListOf<RegisteredDrivers>()
+                drivers.clear()
 
+                // Populate the list with drivers
                 for (document in documents) {
                     val driver = document.toObject(RegisteredDrivers::class.java)
                     drivers.add(driver)
-                    driverNames.add(driver.firstName)
-                    driversLastName.add(driver.lastName)
                 }
 
                 val lowerCaseQuery = query.lowercase()
-                val filteredDriverNames =
-                    driverNames.filter { it.lowercase().contains(lowerCaseQuery) }
-                val filteredlastNames =
-                    driversLastName.filter { it.lowercase().contains(lowerCaseQuery) }
-                val filteredDrivers = drivers.filterIndexed { index, _ ->
-                    driverNames[index].lowercase().contains(lowerCaseQuery)
+
+                // Filter the drivers by license number
+                val filteredDrivers = drivers.filter { driver ->
+                    driver.licensedNumber.lowercase().contains(lowerCaseQuery)
                 }
-                val filtered = drivers.filterIndexed { index, _ ->
-                    driversLastName[index].lowercase().contains(lowerCaseQuery)
-                }
+
+                // Extract the license numbers for display in the adapter
+                val filteredLicenseNumbers = filteredDrivers.map { it.licensedNumber }
 
                 driverNamesAdapter = ArrayAdapter(
                     requireContext(),
                     android.R.layout.simple_dropdown_item_1line,
-                    filteredDriverNames
-                )
-                driverNamesAdapter = ArrayAdapter(
-                    requireContext(),
-                    android.R.layout.simple_dropdown_item_1line,
-                    filteredlastNames
+                    filteredLicenseNumbers
                 )
 
                 binding.tvSearchDrivers.setAdapter(driverNamesAdapter)
+
+                // Assign the filtered drivers to storedDrivers (this expects a list of RegisteredDrivers)
                 storedDrivers = filteredDrivers
-                binding.tvSearchDrivers.setAdapter(driverNamesAdapter)
-                storedDrivers = filtered
             }
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting documents: ", exception)
             }
     }
+
 
     @SuppressLint("SetTextI18n")
     private fun updateTotalAmount(amount: String) {
@@ -273,7 +266,7 @@ class WithLicensedFragment : Fragment() {
         val birthdate = binding.birthdate.text.toString().trim()
         val sex = binding.sex.text.toString().trim()
         val address = binding.address.text.toString().trim()
-        val vehicleType = binding.tvViolation.text.toString().trim()
+        val vehicleType = binding.tvVehicle.text.toString().trim()
         val totalAmount = binding.tvTotalAmount.text.toString().trim()
         val selectedViolations = getSelectedViolations()
         val plate = binding.plate.text.toString().trim()
