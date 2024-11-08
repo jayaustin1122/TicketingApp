@@ -1,32 +1,26 @@
 package com.example.smartticketing.views.nav
 
-import android.app.AlertDialog
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
-import com.example.smartticketing.R
 import com.example.smartticketing.databinding.FragmentReportBinding
-import com.example.smartticketing.model.ViolationItem
-import com.example.smartticketing.utilities.ProgressDialogUtils
-import com.example.smartticketing.utilities.Violations
 import com.example.smartticketing.viewmodels.DashBoardViewModel
+import com.db.williamchart.data.DataPoint
+import com.db.williamchart.view.BarChartView
+import com.db.williamchart.view.HorizontalBarChartView
+import com.example.smartticketing.R
 
 class ReportFragment : Fragment() {
-    private lateinit var binding : FragmentReportBinding
+    private lateinit var binding: FragmentReportBinding
     private val viewModel: DashBoardViewModel by viewModels()
     private var selectedFragmentId: Int? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,19 +30,23 @@ class ReportFragment : Fragment() {
         return binding.root
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.let {
             selectedFragmentId = it.getInt("selectedFragmentId", R.id.navigation_services)
         }
+
         viewModel.driver.observe(viewLifecycleOwner, Observer { count ->
-            binding.tvDriverCount.text = count.toString()
-        })
-        viewModel.apprehendCount.observe(viewLifecycleOwner, Observer { count ->
-            binding.tvCountApprehend.text = count.toString()
+            if (count != null) {
+                updateBarChart(count, viewModel.apprehendCount.value ?: 0)
+            }
         })
 
+        viewModel.apprehendCount.observe(viewLifecycleOwner, Observer { count ->
+            if (count != null) {
+                updateBarChart(viewModel.driver.value ?: 0, count)
+            }
+        })
 
         viewModel.errorMessage.observe(viewLifecycleOwner, Observer { errorMessage ->
             if (errorMessage != null) {
@@ -62,4 +60,22 @@ class ReportFragment : Fragment() {
             viewModel.loadApprehends()
         }
     }
+
+    private fun updateBarChart(driverCount: Int, apprehendCount: Int) {
+        val dataPoints = listOf(
+            Pair("Drivers", driverCount.toFloat()),
+            Pair("Apprehends", apprehendCount.toFloat())
+        )
+        val dataPoints2 = listOf(
+            Pair("Drivers", driverCount.toFloat()),
+            Pair("Apprehends", apprehendCount.toFloat())
+        )
+
+        // Update Vertical Bar Chart
+        binding.barChart.show(dataPoints)
+
+        // Update Horizontal Bar Chart
+        binding.barChartHorizontal.show(dataPoints2)
+    }
+
 }

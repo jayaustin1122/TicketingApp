@@ -21,9 +21,10 @@ object Violations {
         ViolationItem(code = "15", name = "Illegal Lights", amount = "1000.00"),
         ViolationItem(code = "16", name = "Overloading", amount = "2000.00"),
         ViolationItem(code = "17", name = "Obstruction", amount = "1000.00"),
-        ViolationItem(code = "18", name = "Unregistered", amount = "10000.00"),
+        ViolationItem(code = "18", name = "Unregistered Vehicle", amount = "10000.00"),
         ViolationItem(code = "19", name = "Defective Parts", amount = "5000.00"),
         ViolationItem(code = "20", name = "Smoke Belching", amount = "2000.00"),
-        ViolationItem(code = "21", name = "Coding", amount = "300.00")
+        ViolationItem(code = "21", name = "Coding", amount = "300.00"),
+        ViolationItem(code = "21", name = "Traffic Violation", amount = "300.00")
     )
 }

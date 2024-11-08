@@ -62,10 +62,18 @@ class DashBoardFragment : Fragment() {
                 .setTitle("Apprehension for ${selectedViolation.name}")
                 .setMessage("Is this a license apprehension or no license apprehension?")
                 .setPositiveButton("With License") { dialog, which ->
-                    findNavController().navigate(R.id.withLicensedFragment)
+                    val bundle = Bundle().apply {
+                        putString("violationType", selectedViolation.name)
+                        putString("apprehensionType", "With License")
+                    }
+                    findNavController().navigate(R.id.withLicensedFragment, bundle)
                 }
                 .setNegativeButton("No License") { dialog, which ->
-                    findNavController().navigate(R.id.noLicensedFragment)
+                    val bundle = Bundle().apply {
+                        putString("violationType", selectedViolation.name)
+                        putString("apprehensionType", "No License")
+                    }
+                    findNavController().navigate(R.id.noLicensedFragment, bundle)
                 }
                 .setNeutralButton("Cancel") { dialog, _ ->
                     dialog.dismiss()
@@ -81,11 +89,11 @@ class DashBoardFragment : Fragment() {
         }
 
         binding.drunkAndDrive.setOnClickListener {
-            alertDialog("Drunk and Drive")
+            alertDialog("Driving Under the Influence")
         }
 
         binding.speeding.setOnClickListener {
-            alertDialog("Speeding")
+            alertDialog("Over Speeding")
         }
 
         binding.noInsurance.setOnClickListener {
@@ -97,16 +105,16 @@ class DashBoardFragment : Fragment() {
         }
 
         binding.withoutLicence.setOnClickListener {
-            alertDialog("Without Licence")
+            alertDialog("Without License")
         }
         binding.reclessDriving.setOnClickListener {
-            alertDialog("Recless Driving")
+            alertDialog("Reckless Driving")
         }
         binding.beatingTheRedLight.setOnClickListener {
             alertDialog("Beating Red Light")
         }
         binding.noorcr.setOnClickListener {
-            alertDialog("No or Wrong Registration")
+            alertDialog("No OR-CR")
         }
         binding.illegalParking.setOnClickListener {
             alertDialog("Illegal Parking")
@@ -130,7 +138,7 @@ class DashBoardFragment : Fragment() {
             alertDialog("Smoke Belching")
         }
         binding.codingViolation.setOnClickListener {
-            alertDialog("Coding Violation")
+            alertDialog("Coding")
         }
     }
         private fun observeAndShowViolationDialog(violationType: String) {
@@ -162,15 +170,23 @@ class DashBoardFragment : Fragment() {
             dialog.show()
         }
 
-    fun alertDialog(type: String) {
+    fun alertDialog(violationType: String) {
         val alertDialog = AlertDialog.Builder(requireContext())
-            .setTitle("Add Violation for $type")
+            .setTitle("Add Violation for $violationType")
             .setMessage("Is this a license apprehension or no license apprehension?")
             .setPositiveButton("With License") { dialog, which ->
-                findNavController().navigate(R.id.withLicensedFragment)
+                val bundle = Bundle().apply {
+                    putString("violationType", violationType)
+                    putString("apprehensionType", "With License")
+                }
+                findNavController().navigate(R.id.withLicensedFragment, bundle)
             }
             .setNegativeButton("No License") { dialog, which ->
-                findNavController().navigate(R.id.noLicensedFragment)
+                val bundle = Bundle().apply {
+                    putString("violationType", violationType)
+                    putString("apprehensionType", "No License")
+                }
+                findNavController().navigate(R.id.noLicensedFragment, bundle)
             }
             .setNeutralButton("Cancel") { dialog, _ ->
                 dialog.dismiss()

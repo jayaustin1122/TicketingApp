@@ -99,17 +99,27 @@ class NoLicensedFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Load user info and set initial values
         viewModelUserInfo.loadUserInfo()
         selectedImage = Uri.EMPTY
+
+        val violationType = arguments?.getString("violationType")
+        Toast.makeText(requireContext(), "$violationType", Toast.LENGTH_SHORT).show();
+        // Capture image functionality
         binding.capture.setOnClickListener {
             showImagePickerDialog()
         }
+
+        // Set current date and time
         val date = LocalDate.now()
         val currentTime = LocalTime.now()
         val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
         val dateFormatter = DateTimeFormatter.ofPattern("MMM dd, yyyy")
         binding.tvDate.text = date.format(dateFormatter)
         binding.tvTime.text = currentTime.format(timeFormatter)
+
+        // Initialize adapter for RecyclerView
         adapter = ViolationAdapter(violationList) { removedAmount ->
             updateTotalAmount((-removedAmount).toString())
         }
@@ -117,36 +127,39 @@ class NoLicensedFragment : Fragment() {
         binding.rvAddViolations.adapter = adapter
         binding.rvAddViolations.layoutManager = LinearLayoutManager(requireContext())
 
+        // Handle "Save and Print" button click with a confirmation dialog
         binding.saveAndPrint.setOnClickListener {
-            val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+            val builder = AlertDialog.Builder(requireContext())
             builder.setMessage("Once Data saved will not be able to edit")
-            builder.setTitle("Note!")
-            builder.setCancelable(false)
-            builder.setPositiveButton("Yes",
-                DialogInterface.OnClickListener { dialog: DialogInterface?, which: Int ->
-                    ProgressDialogUtils.showProgressDialog(requireContext(),"Loading...")
+                .setTitle("Note!")
+                .setCancelable(false)
+                .setPositiveButton("Yes") { dialog, which ->
+                    ProgressDialogUtils.showProgressDialog(requireContext(), "Loading...")
 
                     Handler(Looper.getMainLooper()).postDelayed({
                         validateData()
                         ProgressDialogUtils.dismissProgressDialog()
-                    },1000)
-                } as DialogInterface.OnClickListener)
-            builder.setNegativeButton("No",
-                DialogInterface.OnClickListener { dialog: DialogInterface, which: Int ->
-
+                    }, 1000)
+                }
+                .setNegativeButton("No") { dialog, which ->
                     dialog.cancel()
-                } as DialogInterface.OnClickListener)
+                }
 
             val alertDialog: AlertDialog = builder.create()
             alertDialog.show()
-
         }
+
+        // Handle back button click
         binding.backButton.setOnClickListener {
             findNavController().navigateUp()
         }
+
+        // Show date picker dialog for birthdate
         binding.birthdate.setOnClickListener {
             showDatePickerDialog()
         }
+
+        // Add violation from dropdown when selected
         binding.tvViolation.setOnItemClickListener { parent, _, position, _ ->
             val selectedViolation = violationsList[position]
             val newViolation = ViolationItem(
@@ -159,30 +172,49 @@ class NoLicensedFragment : Fragment() {
             selectedViolations.add(newViolation)
             binding.tvViolation.clearFocus()
         }
-        val violationsArray = resources.getStringArray(R.array.vehicles)
-        val adapter = ArrayAdapter(
-            requireContext(), android.R.layout.simple_dropdown_item_1line, violationsArray
+
+        // Initialize dropdown for vehicles
+        val vehiclesArray = resources.getStringArray(R.array.vehicles)
+        val vehicleAdapter = ArrayAdapter(
+            requireContext(), android.R.layout.simple_dropdown_item_1line, vehiclesArray
         )
-        binding.tvVehicle.setAdapter(adapter)
+        binding.tvVehicle.setAdapter(vehicleAdapter)
 
+        // Handle vehicle dropdown selection
         binding.tvVehicle.setOnItemClickListener { parent, _, position, _ ->
-            val selectedViolation = parent.getItemAtPosition(position).toString()
-            Toast.makeText(requireContext(), "Selected: $selectedViolation", Toast.LENGTH_SHORT)
-                .show()
+            val selectedVehicle = parent.getItemAtPosition(position).toString()
+            Toast.makeText(requireContext(), "Selected: $selectedVehicle", Toast.LENGTH_SHORT).show()
         }
-        val violationNames = violationsList.map { it.name }.toTypedArray()
 
-        val adapters = ArrayAdapter(
+        // Initialize violation dropdown with violation names
+        val violationNames = violationsList.map { it.name }.toTypedArray()
+        val violationAdapter = ArrayAdapter(
             requireContext(), android.R.layout.simple_dropdown_item_1line, violationNames
         )
-        binding.tvViolation.setAdapter(adapters)
+        binding.tvViolation.setAdapter(violationAdapter)
 
+        // Automatically add a violation if violationType is passed
+        violationType?.let { type ->
+            val initialViolation = violationsList.find { it.name == type }
+            initialViolation?.let { violation ->
+                val newViolation = ViolationItem(
+                    name = violation.name,
+                    code = violation.code,
+                    amount = violation.amount
+                )
+                // Add to the RecyclerView and update the total amount
+                adapter.addViolation(newViolation)
+                updateTotalAmount(newViolation.amount)
+                selectedViolations.add(newViolation)
+            }
+        }
+
+        // Observe upload status from ViewModel
         viewModel.uploadStatus.observe(viewLifecycleOwner, Observer { message ->
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
         })
-
-
     }
+
     private fun showDatePickerDialog() {
         val datePicker = MaterialDatePicker.Builder.datePicker()
             .setTitleText("Select Date")

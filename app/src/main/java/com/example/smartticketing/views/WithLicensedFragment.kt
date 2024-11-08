@@ -113,7 +113,7 @@ class WithLicensedFragment : Fragment() {
         super.onViewStateRestored(savedInstanceState)
         viewModelUserInfo.loadUserInfo()
         selectedImage = Uri.EMPTY
-
+        val violationType = arguments?.getString("violationType")
         val date = LocalDate.now()
         val currentTime = LocalTime.now()
         val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
@@ -211,24 +211,37 @@ class WithLicensedFragment : Fragment() {
         }
 
         val violationsArray = resources.getStringArray(R.array.vehicles)
-        val adapter = ArrayAdapter(
+        val adapters = ArrayAdapter(
             requireContext(), android.R.layout.simple_dropdown_item_1line, violationsArray
         )
-        binding.tvVehicle.setAdapter(adapter)
+        binding.tvVehicle.setAdapter(adapters)
 
         binding.tvVehicle.setOnItemClickListener { parent, _, position, _ ->
             val selectedViolation = parent.getItemAtPosition(position).toString()
             Toast.makeText(requireContext(), "Selected: $selectedViolation", Toast.LENGTH_SHORT)
                 .show()
         }
-
-        val violationNames = Violations.violationsList.map { it.name }.toTypedArray()
-
-        val adapters = ArrayAdapter(
+        val violationNames = violationsList.map { it.name }.toTypedArray()
+        val violationAdapter = ArrayAdapter(
             requireContext(), android.R.layout.simple_dropdown_item_1line, violationNames
         )
-        binding.tvViolation.setAdapter(adapters)
+        binding.tvViolation.setAdapter(violationAdapter)
 
+        // Automatically add a violation if violationType is passed
+        violationType?.let { type ->
+            val initialViolation = violationsList.find { it.name == type }
+            initialViolation?.let { violation ->
+                val newViolation = ViolationItem(
+                    name = violation.name,
+                    code = violation.code,
+                    amount = violation.amount
+                )
+                // Add to the RecyclerView and update the total amount
+                adapter.addViolation(newViolation)
+                updateTotalAmount(newViolation.amount)
+                selectedViolations.add(newViolation)
+            }
+        }
         viewModel.uploadStatus.observe(viewLifecycleOwner, Observer { message ->
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
         })
