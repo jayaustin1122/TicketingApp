@@ -1,8 +1,11 @@
 package com.example.smartticketing.views
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -44,6 +47,10 @@ class NoLicensedFragment : Fragment() {
     private var totalAmount = 0.0
     private val viewModelUserInfo: DashBoardViewModel by viewModels()
     private var user: String? = null
+    private lateinit var selectedImage: Uri
+    private val CAMERA_PERMISSION_CODE = 101
+    private val IMAGE_PICK_GALLERY_CODE = 102
+    private val IMAGE_PICK_CAMERA_CODE = 103
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -52,13 +59,51 @@ class NoLicensedFragment : Fragment() {
         return binding.root
     }
 
+    private fun showImagePickerDialog() {
+        val options = arrayOf("Gallery")
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Choose Image From")
+            .setItems(options) { dialog: DialogInterface?, which: Int ->
+                when (which) {
+                    0 -> {
+                        pickImageFromGallery()
+                    }
+                }
+            }
+            .show()
+    }
+    private fun pickImageFromGallery() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, IMAGE_PICK_GALLERY_CODE)
+    }
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == IMAGE_PICK_GALLERY_CODE) {
+                selectedImage = data?.data!!
+                binding.imageCapture.visibility = View.VISIBLE
+                binding.imageCapture.setImageURI(selectedImage)
 
+                Log.d("TwoSignupFragment", "Image selected: $selectedImage")
+            } else if (requestCode == IMAGE_PICK_CAMERA_CODE) {
+                binding.imageCapture.visibility = View.VISIBLE
+                binding.imageCapture.setImageURI(selectedImage)
+
+                Log.d("TwoSignupFragment", "Image selected: $selectedImage")
+            }
+        }
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModelUserInfo.loadUserInfo()
-
+        selectedImage = Uri.EMPTY
+        binding.capture.setOnClickListener {
+            showImagePickerDialog()
+        }
         val date = LocalDate.now()
         val currentTime = LocalTime.now()
         val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
@@ -228,7 +273,8 @@ class NoLicensedFragment : Fragment() {
                                     "No Licensed",
                                     selectedViolations,
                                     "${userInfo.firstName} ${userInfo.lastName}",
-                                    plate
+                                    plate,
+                                    selectedImage!!.toString()
                                 )
                                 viewModel.uploadNoLicensedViolationDriver(
                                     fullName,

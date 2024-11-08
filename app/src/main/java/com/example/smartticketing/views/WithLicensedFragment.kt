@@ -1,9 +1,12 @@
 package com.example.smartticketing.views
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.ContentValues.TAG
 import android.content.DialogInterface
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -54,6 +57,10 @@ class WithLicensedFragment : Fragment() {
     private lateinit var driverNamesAdapter: ArrayAdapter<String>
     private val firestore: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
     private var user: String? = null
+    private lateinit var selectedImage: Uri
+    private val CAMERA_PERMISSION_CODE = 101
+    private val IMAGE_PICK_GALLERY_CODE = 102
+    private val IMAGE_PICK_CAMERA_CODE = 103
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,13 +71,48 @@ class WithLicensedFragment : Fragment() {
         return binding.root
     }
 
+    private fun showImagePickerDialog() {
+        val options = arrayOf("Gallery")
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Choose Image From")
+            .setItems(options) { dialog: DialogInterface?, which: Int ->
+                when (which) {
+                    0 -> {
+                        pickImageFromGallery()
+                    }
+                }
+            }
+            .show()
+    }
+    private fun pickImageFromGallery() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, IMAGE_PICK_GALLERY_CODE)
+    }
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == IMAGE_PICK_GALLERY_CODE) {
+                selectedImage = data?.data!!
+                binding.imageCapture.visibility = View.VISIBLE
+                binding.imageCapture.setImageURI(selectedImage)
 
+                Log.d("TwoSignupFragment", "Image selected: $selectedImage")
+            } else if (requestCode == IMAGE_PICK_CAMERA_CODE) {
+                binding.imageCapture.visibility = View.VISIBLE
+                binding.imageCapture.setImageURI(selectedImage)
+
+                Log.d("TwoSignupFragment", "Image selected: $selectedImage")
+            }
+        }
+    }
     @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         viewModelUserInfo.loadUserInfo()
-
+        selectedImage = Uri.EMPTY
 
         val date = LocalDate.now()
         val currentTime = LocalTime.now()
@@ -78,7 +120,9 @@ class WithLicensedFragment : Fragment() {
         val dateFormatter = DateTimeFormatter.ofPattern("MMM dd, yyyy")
         binding.tvDate.text = date.format(dateFormatter)
         binding.tvTime.text = currentTime.format(timeFormatter)
-
+        binding.capture.setOnClickListener {
+            showImagePickerDialog()
+        }
         //when delete button clicked in adapter will deduct amount itrem remove
         adapter = ViolationAdapter(violationList) { removedAmount ->
             updateTotalAmount((-removedAmount).toString())
@@ -340,7 +384,8 @@ class WithLicensedFragment : Fragment() {
                                     "With Licensed",
                                     selectedViolations,
                                     "${userInfo.firstName} ${userInfo.lastName}",
-                                    plate
+                                    plate,
+                                    selectedImage!!.toString()
                                 )
                                 viewModel.uploadNoLicensedViolationDriver(
                                     fullName,
@@ -450,7 +495,8 @@ class WithLicensedFragment : Fragment() {
                             "With Licensed",
                             selectedViolations,
                             "${userInfo.firstName} ${userInfo.lastName}",
-                            plate
+                            plate,
+                            selectedImage!!.toString()
                         )
                         viewModel.uploadDriversNotRegisteredInDb(
                             fullName,

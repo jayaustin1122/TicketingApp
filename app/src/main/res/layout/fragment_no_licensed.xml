@@ -257,9 +257,16 @@
                     android:padding="16dp" />
 
             </com.google.android.material.textfield.TextInputLayout>
-
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:id="@+id/image_capture"
+                android:visibility="gone"
+                android:scaleType="fitXY"
+                />
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvAddViolations"
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="140dp"
                 android:layout_marginBottom="10dp"
@@ -293,7 +300,14 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
-
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/capture"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/holo_green_light"
+                android:text="Capture"
+                android:textColor="@android:color/white" />
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/save_and_print"
                 style="@style/Widget.MaterialComponents.Button"
