@@ -3,13 +3,16 @@ package com.example.smartticketing.views
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.ContentValues
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.provider.MediaStore
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -19,6 +22,8 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -59,24 +64,6 @@ class NoLicensedFragment : Fragment() {
         return binding.root
     }
 
-    private fun showImagePickerDialog() {
-        val options = arrayOf("Gallery")
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("Choose Image From")
-            .setItems(options) { dialog: DialogInterface?, which: Int ->
-                when (which) {
-                    0 -> {
-                        pickImageFromGallery()
-                    }
-                }
-            }
-            .show()
-    }
-    private fun pickImageFromGallery() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent, IMAGE_PICK_GALLERY_CODE)
-    }
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -156,7 +143,7 @@ class NoLicensedFragment : Fragment() {
 
         // Show date picker dialog for birthdate
         binding.birthdate.setOnClickListener {
-            showDatePickerDialog()
+            showImagePickerDialog()
         }
 
         // Add violation from dropdown when selected
@@ -192,8 +179,10 @@ class NoLicensedFragment : Fragment() {
             requireContext(), android.R.layout.simple_dropdown_item_1line, violationNames
         )
         binding.tvViolation.setAdapter(violationAdapter)
-
-        // Automatically add a violation if violationType is passed
+        val noLicenseViolation = ViolationItem(code = "6", name = "No License", amount = "3,000.00")
+        adapter.addViolation(noLicenseViolation)
+        updateTotalAmount(noLicenseViolation.amount)
+        selectedViolations.add(noLicenseViolation)
         violationType?.let { type ->
             val initialViolation = violationsList.find { it.name == type }
             initialViolation?.let { violation ->
@@ -202,7 +191,7 @@ class NoLicensedFragment : Fragment() {
                     code = violation.code,
                     amount = violation.amount
                 )
-                // Add to the RecyclerView and update the total amount
+                // Add the selected violation to the RecyclerView and update the total amount
                 adapter.addViolation(newViolation)
                 updateTotalAmount(newViolation.amount)
                 selectedViolations.add(newViolation)
@@ -215,21 +204,58 @@ class NoLicensedFragment : Fragment() {
         })
     }
 
-    private fun showDatePickerDialog() {
-        val datePicker = MaterialDatePicker.Builder.datePicker()
-            .setTitleText("Select Date")
-            .build()
-        datePicker.addOnPositiveButtonClickListener { selection ->
-            val calendar = Calendar.getInstance().apply {
-                timeInMillis = selection
-            }
-            val year = calendar.get(Calendar.YEAR).toString()
-            val month = (calendar.get(Calendar.MONTH) + 1).toString()
-            val day = calendar.get(Calendar.DAY_OF_MONTH).toString()
+    private fun showImagePickerDialog() {
+        val options = arrayOf("Camera", "Gallery")
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Choose Image From")
+            .setItems(options) { dialog: DialogInterface?, which: Int ->
+                when (which) {
+                    0 -> {
+                        if (checkCameraPermission()) {
+                            pickImageFromCamera()
+                        } else {
+                            requestCameraPermission()
+                        }
+                    }
 
-            binding.birthdate.setText("${month}/${day}/${year}")
-        }
-        datePicker.show(parentFragmentManager, "MaterialDatePicker")
+                    1 -> pickImageFromGallery()
+                }
+            }
+            .show()
+    }
+    private fun checkCameraPermission(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            requireContext(),
+            android.Manifest.permission.CAMERA
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun requestCameraPermission() {
+        ActivityCompat.requestPermissions(
+            requireActivity(),
+            arrayOf(android.Manifest.permission.CAMERA),
+            CAMERA_PERMISSION_CODE
+        )
+    }
+
+    private fun pickImageFromGallery() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, IMAGE_PICK_GALLERY_CODE)
+    }
+
+    private fun pickImageFromCamera() {
+        val values = ContentValues()
+        values.put(MediaStore.Images.Media.TITLE, "Temp Pic")
+        values.put(MediaStore.Images.Media.DESCRIPTION, "Temp Description")
+        selectedImage =
+            requireActivity().contentResolver.insert(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                values
+            )!!
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, selectedImage)
+        startActivityForResult(intent, IMAGE_PICK_CAMERA_CODE)
     }
 
     @SuppressLint("SetTextI18n")

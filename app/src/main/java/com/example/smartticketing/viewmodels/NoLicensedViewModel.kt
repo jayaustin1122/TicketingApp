@@ -41,7 +41,8 @@ class NoLicensedViewModel : ViewModel() {
             "selectedViolations" to selectedViolations,
             "officerApprehend" to officerApprehend,
             "plateNumber" to plate,
-            "image_capture" to null
+            "image_capture" to null,
+            "status" to "Pending"
         )
 
         if (!image_capture.isNullOrEmpty()) {

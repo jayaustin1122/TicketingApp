@@ -140,6 +140,9 @@ class DashBoardFragment : Fragment() {
         binding.codingViolation.setOnClickListener {
             alertDialog("Coding")
         }
+        binding.others.setOnClickListener {
+            alertDialog("")
+        }
     }
         private fun observeAndShowViolationDialog(violationType: String) {
             if (isDialogShowing) return // Prevent showing multiple dialogs at once

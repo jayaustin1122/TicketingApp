@@ -340,6 +340,7 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@android:color/holo_green_light"
                 android:text="Capture"
+                android:visibility="gone"
                 android:textColor="@android:color/white" />
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/save_and_print"
