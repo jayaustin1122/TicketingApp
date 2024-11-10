@@ -8,7 +8,7 @@ import com.example.smartticketing.databinding.ItemViolationsBinding
 import com.example.smartticketing.model.ViolationItem
 
 class ViolationAdapter(private val violationList: MutableList<ViolationItem>,
-                       private val onViolationRemoved: (Int) -> Unit
+                       private val onViolationRemoved: (Float) -> Unit
     ) : RecyclerView.Adapter<ViolationAdapter.ViolationViewHolder>() {
 
     inner class ViolationViewHolder(val binding: ItemViolationsBinding) : RecyclerView.ViewHolder(binding.root)
@@ -37,10 +37,13 @@ class ViolationAdapter(private val violationList: MutableList<ViolationItem>,
     fun remove(violationItem: ViolationItem) {
         val position = violationList.indexOf(violationItem)
         if (position != -1) {
-            val removedAmount = violationList[position].amount.toInt()
+            // Remove commas from the string and then convert it to a float
+            val removedAmount = violationList[position].amount.replace(",", "").toFloat()
             violationList.removeAt(position)
             notifyItemRemoved(position)
             onViolationRemoved(removedAmount)
         }
     }
+
+
 }

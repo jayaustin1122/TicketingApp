@@ -19,6 +19,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -96,6 +97,27 @@ class NoLicensedFragment : Fragment() {
         // Capture image functionality
         binding.capture.setOnClickListener {
             showImagePickerDialog()
+        }
+        val sexOptions = listOf("Male", "Female")
+        val adapters = ArrayAdapter(
+            requireContext(), android.R.layout.simple_dropdown_item_1line, sexOptions
+        )
+        binding.sex.setAdapter(adapters)
+
+        // Handle vehicle dropdown selection
+        binding.sex.setOnItemClickListener { parent, _, position, _ ->
+            val sexOption = parent.getItemAtPosition(position).toString()
+            Toast.makeText(requireContext(), "Selected: $sexOption", Toast.LENGTH_SHORT).show()
+        }
+        val imp = listOf("Impound", "Not Impound")
+        val adaptersss = ArrayAdapter(
+            requireContext(), android.R.layout.simple_dropdown_item_1line, imp
+        )
+        binding.etImpound.setAdapter(adaptersss)
+
+        // Handle vehicle dropdown selection
+        binding.etImpound.setOnItemClickListener { parent, _, position, _ ->
+            val sexOption = parent.getItemAtPosition(position).toString()
         }
 
         // Set current date and time
@@ -280,7 +302,7 @@ class NoLicensedFragment : Fragment() {
         val totalAmount = binding.tvTotalAmount.text.toString().trim()
         val plate = binding.plate.text.toString().trim()
         val selectedViolations = getSelectedViolations()
-
+        val impound = binding.etImpound.text.toString().trim()
         // Validate input fields
         when {
             fullName.isEmpty() -> {
@@ -294,6 +316,10 @@ class NoLicensedFragment : Fragment() {
             sex.isEmpty() -> {
                 binding.sex.error = "Sex is required"
                 binding.sex.requestFocus()
+            }
+            impound.isEmpty() -> {
+                binding.etImpound.error = "This is required"
+                binding.etImpound.requestFocus()
             }
             address.isEmpty() -> {
                 binding.address.error = "Address is required"
@@ -330,9 +356,10 @@ class NoLicensedFragment : Fragment() {
                                     totalAmount,
                                     "No Licensed",
                                     selectedViolations,
-                                    "${userInfo.firstName} ${userInfo.lastName}",
+                                    "${userInfo.firstName}  ${userInfo.lastName}",
                                     plate,
-                                    selectedImage!!.toString()
+                                    selectedImage!!.toString(),
+                                    impound
                                 )
                                 viewModel.uploadNoLicensedViolationDriver(
                                     fullName,

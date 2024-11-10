@@ -15,7 +15,7 @@ object Violations {
         ViolationItem(code = "9", name = "Use of Mobile Phone While Driving", amount = "1,000.00"),
         ViolationItem(code = "10", name = "Failure to Signal", amount = "1,000.00"),
         ViolationItem(code = "11", name = "Reckless Driving", amount = "1000.00"),
-        ViolationItem(code = "12", name = "Beating the red light", amount = "1000.00"),
+        ViolationItem(code = "12", name = "Beating The Red Light", amount = "1000.00"),
         ViolationItem(code = "13", name = "No OR-CR", amount = "3000.00"),
         ViolationItem(code = "14", name = "Illegal Parking", amount = "200.00"),
         ViolationItem(code = "15", name = "Illegal Lights", amount = "1000.00"),

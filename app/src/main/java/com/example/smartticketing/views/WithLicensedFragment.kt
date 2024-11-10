@@ -123,6 +123,26 @@ class WithLicensedFragment : Fragment() {
         binding.capture.setOnClickListener {
             showImagePickerDialog()
         }
+        val sexOptions = listOf("Male", "Female")
+        val adapterss = ArrayAdapter(
+            requireContext(), android.R.layout.simple_dropdown_item_1line, sexOptions
+        )
+        binding.sex.setAdapter(adapterss)
+
+        // Handle vehicle dropdown selection
+        binding.sex.setOnItemClickListener { parent, _, position, _ ->
+            val sexOption = parent.getItemAtPosition(position).toString()
+       }
+        val imp = listOf("Impound", "Not Impound")
+        val adaptersss = ArrayAdapter(
+            requireContext(), android.R.layout.simple_dropdown_item_1line, imp
+        )
+        binding.etImpound.setAdapter(adaptersss)
+
+        // Handle vehicle dropdown selection
+        binding.etImpound.setOnItemClickListener { parent, _, position, _ ->
+            val sexOption = parent.getItemAtPosition(position).toString()
+        }
         //when delete button clicked in adapter will deduct amount itrem remove
         adapter = ViolationAdapter(violationList) { removedAmount ->
             updateTotalAmount((-removedAmount).toString())
@@ -327,6 +347,7 @@ class WithLicensedFragment : Fragment() {
         val totalAmount = binding.tvTotalAmount.text.toString().trim()
         val selectedViolations = getSelectedViolations()
         val plate = binding.plate.text.toString().trim()
+        val impound = binding.etImpound.text.toString().trim()
         // Validate input fields
         when {
 
@@ -349,6 +370,10 @@ class WithLicensedFragment : Fragment() {
             address.isEmpty() -> {
                 binding.address.error = "Address is required"
                 binding.address.requestFocus()
+            }
+            impound.isEmpty() -> {
+                binding.etImpound.error = "This is required"
+                binding.etImpound.requestFocus()
             }
 
             vehicleType.isEmpty() || vehicleType == "Select Vehicle Type" -> {
@@ -396,9 +421,10 @@ class WithLicensedFragment : Fragment() {
                                     totalAmount,
                                     "With Licensed",
                                     selectedViolations,
-                                    "${userInfo.firstName} ${userInfo.lastName}",
+                                    "${userInfo.firstName}  ${userInfo.lastName}",
                                     plate,
-                                    selectedImage!!.toString()
+                                    selectedImage!!.toString(),
+                                    impound
                                 )
                                 viewModel.uploadNoLicensedViolationDriver(
                                     fullName,
@@ -444,6 +470,7 @@ class WithLicensedFragment : Fragment() {
         val totalAmount = binding.tvTotalAmount.text.toString().trim()
         val selectedViolations = getSelectedViolations()
         val plate = binding.plate.text.toString().trim()
+        val impound = binding.etImpound.text.toString().trim()
         // Validate input fields
         when {
 
@@ -472,7 +499,10 @@ class WithLicensedFragment : Fragment() {
                 Toast.makeText(requireContext(), "Please select a vehicle type", Toast.LENGTH_SHORT)
                     .show()
             }
-
+            impound.isEmpty() -> {
+                binding.etImpound.error = "This is required"
+                binding.etImpound.requestFocus()
+            }
             plate.isEmpty() -> {
                 binding.plate.error = "License number is required"
                 binding.plate.requestFocus()
@@ -509,7 +539,8 @@ class WithLicensedFragment : Fragment() {
                             selectedViolations,
                             "${userInfo.firstName} ${userInfo.lastName}",
                             plate,
-                            selectedImage!!.toString()
+                            selectedImage!!.toString(),
+                            impound
                         )
                         viewModel.uploadDriversNotRegisteredInDb(
                             fullName,

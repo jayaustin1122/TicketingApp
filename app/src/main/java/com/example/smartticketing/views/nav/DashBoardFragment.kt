@@ -111,7 +111,7 @@ class DashBoardFragment : Fragment() {
             alertDialog("Reckless Driving")
         }
         binding.beatingTheRedLight.setOnClickListener {
-            alertDialog("Beating Red Light")
+            alertDialog("Beating The Red Light")
         }
         binding.noorcr.setOnClickListener {
             alertDialog("No OR-CR")

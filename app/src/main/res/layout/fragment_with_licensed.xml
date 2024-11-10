@@ -186,16 +186,17 @@
             <!-- Sex -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/sexLayout"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:hint="Sex">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <AutoCompleteTextView
                     android:id="@+id/sex"
+                    android:padding="16dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text" />
+                    android:layout_height="56dp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Address -->
@@ -208,6 +209,22 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPostalAddress" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/impound"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:hint="Impound">
+
+
+                <AutoCompleteTextView
+                    android:id="@+id/etImpound"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPostalAddress" />

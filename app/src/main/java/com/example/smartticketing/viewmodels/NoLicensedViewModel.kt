@@ -25,7 +25,8 @@ class NoLicensedViewModel : ViewModel() {
         selectedViolations: List<ViolationItem>,
         officerApprehend: String,
         plate: String,
-        image_capture: String?
+        image_capture: String?,
+        note: String?
     ) {
         val timestamp = System.currentTimeMillis() / 1000
         val violationData = hashMapOf(
@@ -42,7 +43,7 @@ class NoLicensedViewModel : ViewModel() {
             "officerApprehend" to officerApprehend,
             "plateNumber" to plate,
             "image_capture" to null,
-            "status" to "Pending"
+            "status" to "pending"
         )
 
         if (!image_capture.isNullOrEmpty()) {
